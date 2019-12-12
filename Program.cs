@@ -47,11 +47,11 @@ namespace Jurassic
       Console.WriteLine("I don't understand that, try again");
     }
 
-    static void DisplayTopThree(IEnumerable<Dinosaurs> dinos)
-    {
-      var dinoList = DinosaurInventory.OrderByDescending(dino => dino.Weight);
-      Console.WriteLine($"The Biggest Dinosaurs are {dino.Name} at {dino.Weight}");
-    }
+    // static void DisplayTopThree(IEnumerable<Dinosaurs> dinos)
+    // {
+    //   var dinoList = DinosaurInventory.OrderByDescending(dino => dino.Weight);
+    //   Console.WriteLine($"The Biggest Dinosaurs are {dino.Name} at {dino.Weight}");
+    // }
 
 
     static void DisplayListOfDinosaurs(IEnumerable<Dinosaurs> dinos)
@@ -83,7 +83,12 @@ namespace Jurassic
       Console.WriteLine($"There are {dinoDiet} of {dinoDietType}");
     }
 
-
+    static void DeleteDino()
+    {
+      Console.WriteLine("what is the name of the dinosaurs you want to remove");
+      var dinoName = Console.ReadLine();
+      DinosaurInventory.RemoveAll(dino => dino.Name == dinoName);
+    }
 
 
 
@@ -94,7 +99,7 @@ namespace Jurassic
       while (input != "quit")
       {
         Console.WriteLine("What would you like to do?");
-        Console.WriteLine("Available commands are: view, add, remove, transfer, diet, 3 heaviest, or quit");
+        Console.WriteLine("Available commands are: view, add, remove, transfer, diet, heaviest, or quit");
         input = Console.ReadLine().ToLower();
         if (input == "add")
         {
@@ -112,6 +117,10 @@ namespace Jurassic
         else if (input == "quit")
         {
           QuitProgramMessage();
+        }
+        else if (input == "remove")
+        {
+          DeleteDino();
         }
         else if (input == "view")
         {
