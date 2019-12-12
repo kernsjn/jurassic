@@ -47,18 +47,12 @@ namespace Jurassic
       Console.WriteLine("I don't understand that, try again");
     }
 
-    // static void SearchForTopThree()
-    // {
-    //   Console.WriteLine("What are you searhing for?");
-    //   var searchTerm = Console.ReadLine();
-    //   // Search our list????
-    //   var results = DinosaurInventory
-    //         .Where(dino =>
-    //             MAX(dino.weight[2])
-    //                 .Contains(searchTerm.ToLower()));
+    static void DisplayTopThree(IEnumerable<Dinosaurs> dinos)
+    {
+      var dinoList = DinosaurInventory.OrderByDescending(dino => dino.Weight);
+      Console.WriteLine($"The Biggest Dinosaurs are {dino.Name} at {dino.Weight}");
+    }
 
-    //   DisplayListOfDinosaurs(results);
-    // }
 
     static void DisplayListOfDinosaurs(IEnumerable<Dinosaurs> dinos)
     {
@@ -81,6 +75,18 @@ namespace Jurassic
       moveDino.EnclosureNumber = int.Parse(dinoEnclosureNumber);
     }
 
+    static void DietSummary()
+    {
+      Console.WriteLine("Who do you want a summary for carnivores or herbivores?");
+      var dinoDietType = Console.ReadLine();
+      var dinoDiet = DinosaurInventory.Count(dino => dino.DietType == dinoDietType);
+      Console.WriteLine($"There are {dinoDiet} of {dinoDietType}");
+    }
+
+
+
+
+
     static void Main(string[] args)
     {
       Console.WriteLine("Welcome to Jurassic Park");
@@ -88,7 +94,7 @@ namespace Jurassic
       while (input != "quit")
       {
         Console.WriteLine("What would you like to do?");
-        Console.WriteLine("Available commands are: view, add, remove, transfer, diet summary, 3 heaviest, or quit");
+        Console.WriteLine("Available commands are: view, add, remove, transfer, diet, 3 heaviest, or quit");
         input = Console.ReadLine().ToLower();
         if (input == "add")
         {
@@ -99,10 +105,10 @@ namespace Jurassic
         {
           UpdateDinoEnclosure();
         }
-        //         else if (input == "search")
-        //         {
-        //           SearchFordino();
-        //   }
+        else if (input == "diet")
+        {
+          DietSummary();
+        }
         else if (input == "quit")
         {
           QuitProgramMessage();
