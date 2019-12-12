@@ -42,17 +42,23 @@ namespace Jurassic
       DisplayListOfDinosaurs(DinosaurInventory);
     }
 
+
+    static void DisplayTopThree()
+    {
+      Console.WriteLine("Jurassic Park's top three dinosaurs by weight are:");
+      Console.WriteLine("--------------------------------------------------");
+
+      DisplayListOfDinosaurs(DinosaurInventory.OrderByDescending(dino => dino.Weight).Take(3));
+
+      Console.WriteLine("---------------------------------------");
+
+    }
+
+
     static void UnknownCommand()
     {
       Console.WriteLine("I don't understand that, try again");
     }
-
-    // static void DisplayTopThree(IEnumerable<Dinosaurs> dinos)
-    // {
-    //   var dinoList = DinosaurInventory.OrderByDescending(dino => dino.Weight);
-    //   Console.WriteLine($"The Biggest Dinosaurs are {dino.Name} at {dino.Weight}");
-    // }
-
 
     static void DisplayListOfDinosaurs(IEnumerable<Dinosaurs> dinos)
     {
@@ -80,7 +86,7 @@ namespace Jurassic
       Console.WriteLine("Who do you want a summary for carnivores or herbivores?");
       var dinoDietType = Console.ReadLine();
       var dinoDiet = DinosaurInventory.Count(dino => dino.DietType == dinoDietType);
-      Console.WriteLine($"There are {dinoDiet} of {dinoDietType}");
+      Console.WriteLine($"There are {dinoDiet} {dinoDietType}");
     }
 
     static void DeleteDino()
@@ -110,6 +116,10 @@ namespace Jurassic
         {
           UpdateDinoEnclosure();
         }
+        else if (input == "heaviest")
+        {
+          DisplayTopThree();
+        }
         else if (input == "diet")
         {
           DietSummary();
@@ -131,7 +141,6 @@ namespace Jurassic
           UnknownCommand();
         }
 
-        //       }
       }
     }
   }

@@ -18,5 +18,9 @@ namespace Jurassic
     // EnclosureNumber - the Pen that the dinosaur is currently on
     public int EnclosureNumber { get; set; }
 
+    internal static object Take(int v)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
