@@ -7,7 +7,8 @@ namespace Jurassic
   class Program
   {
 
-    static List<Dinosaurs> DinosaurInventory = new List<Dinosaurs>();
+    // static List<Dinosaurs> DinosaurInventory = new List<Dinosaurs>();
+    static DatabaseContext Db = new DatabaseContext();
 
     static void AddDinosaur()
     {
@@ -29,7 +30,8 @@ namespace Jurassic
       dino.EnclosureNumber = int.Parse(dinoEnclosureNumber);
 
 
-      DinosaurInventory.Add(dino);
+      Db.Dinosaurs.Add(dino);
+      Db.SaveChanges();
     }
 
     static void QuitProgramMessage()
@@ -39,7 +41,7 @@ namespace Jurassic
 
     static void ViewAll()
     {
-      DisplayListOfDinosaurs(DinosaurInventory);
+      DisplayListOfDinosaurs(Db.Dinosaurs);
     }
 
 
@@ -48,7 +50,7 @@ namespace Jurassic
       Console.WriteLine("Jurassic Park's top three dinosaurs by weight are:");
       Console.WriteLine("--------------------------------------------------");
 
-      DisplayListOfDinosaurs(DinosaurInventory.OrderByDescending(dino => dino.Weight).Take(3));
+      DisplayListOfDinosaurs(Db.Dinosaurs.OrderByDescending(dino => dino.Weight).Take(3));
 
       Console.WriteLine("---------------------------------------");
 
@@ -66,7 +68,7 @@ namespace Jurassic
       Console.WriteLine("--------------------------------------------------");
       foreach (var dino in dinos)
       {
-        Console.WriteLine($"{dino.Name} has been a {dino.DietType} since arrival on {dino.DateAcquired} weighing in at {dino.Weight} lbs. and can be seen in enclosure {dino.EnclosureNumber}");
+        Console.WriteLine($"{dino.Id}:  {dino.Name} has been a {dino.DietType} since arrival on {dino.DateAcquired} weighing in at {dino.Weight} lbs. and can be seen in enclosure {dino.EnclosureNumber}");
       }
     }
 
@@ -76,16 +78,17 @@ namespace Jurassic
       var dinoName = Console.ReadLine();
       Console.WriteLine($"Where would you like to move {dinoName} to?");
       var dinoEnclosureNumber = Console.ReadLine();
-      var moveDino = DinosaurInventory
+      var moveDino = Db.Dinosaurs
         .FirstOrDefault(dino => dino.Name.ToLower() == dinoName.ToLower());
       moveDino.EnclosureNumber = int.Parse(dinoEnclosureNumber);
+      Db.SaveChanges();
     }
 
     static void DietSummary()
     {
       Console.WriteLine("Who do you want a summary for carnivores or herbivores?");
       var dinoDietType = Console.ReadLine();
-      var dinoDiet = DinosaurInventory.Count(dino => dino.DietType == dinoDietType);
+      var dinoDiet = Db.Dinosaurs.Count(dino => dino.DietType == dinoDietType);
       Console.WriteLine($"There are {dinoDiet} {dinoDietType}");
     }
 
@@ -93,7 +96,13 @@ namespace Jurassic
     {
       Console.WriteLine("what is the name of the dinosaurs you want to remove");
       var dinoName = Console.ReadLine();
-      DinosaurInventory.RemoveAll(dino => dino.Name == dinoName);
+      var dinoToDelete = Db.Dinosaurs.FirstOrDefault(dino => dino.Name == dinoName);
+      if (dinoToDelete != null)
+      {
+        Db.Dinosaurs.Remove(dinoToDelete);
+        Db.SaveChanges();
+
+      }
     }
 
 
@@ -145,3 +154,6 @@ namespace Jurassic
     }
   }
 }
+
+
+
